@@ -41,7 +41,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     (response: AuthResponse) => {
       const { accessToken, ...userData } = response.data;
 
-      // This will automatically persist to localStorage via useLocalStorage
       setToken(accessToken);
       setUser(userData);
       setError(null);
@@ -74,9 +73,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await authService.register(userData);
-        handleAuthSuccess(response);
-        navigate("/");
+        await authService.register(userData);
+
+        navigate("/login");
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Registration failed";
@@ -86,11 +85,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoading(false);
       }
     },
-    [handleAuthSuccess, navigate]
+    [navigate]
   );
 
   const logout = useCallback(() => {
-    // These will update state AND remove from localStorage
     removeToken();
     removeUser();
     navigate("/login");

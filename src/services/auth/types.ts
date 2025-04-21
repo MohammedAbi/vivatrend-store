@@ -11,7 +11,7 @@ export interface Banner {
 export interface UserProfile {
   name: string;
   email: string;
-  bio: string;
+  bio?: string;
   avatar?: Avatar;
   banner?: Banner;
   venueManager?: boolean;
@@ -34,9 +34,9 @@ export interface LoginCredentials {
 export interface RegisterData {
   name: string;
   email: string;
-  bio?: string;
-  avatar?: string;
-  banner?: string;
   password: string;
+  bio?: string;
+  avatar?: Avatar;
+  banner?: Banner;
   venueManager?: boolean;
 }
