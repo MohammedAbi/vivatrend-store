@@ -1,6 +1,6 @@
 import React from "react";
 import { FiUser, FiMail, FiMapPin } from "react-icons/fi";
-import { CheckoutFormData } from "../utils/types";
+import { CheckoutFormData } from "../CheckoutForms/types";
 
 interface ContactFormProps {
   formData: CheckoutFormData;

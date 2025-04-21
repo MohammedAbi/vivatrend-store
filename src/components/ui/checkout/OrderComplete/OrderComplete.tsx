@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FiCheckCircle } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { OrderCompleteData } from "../utils/types";
+import { OrderCompleteData } from "../CheckoutForms/types";
 import { toast } from "react-toastify";
 
 export interface OrderCompleteProps {

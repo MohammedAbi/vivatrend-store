@@ -117,8 +117,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
         email: formData.email,
         password: formData.password,
         bio: formData.bio || undefined,
-        avatar: avatar.url ? avatar : undefined,
-        banner: banner.url ? banner : undefined,
+        avatar: avatar.url || undefined,
+        banner: banner.url || undefined,
         venueManager: formData.venueManager,
       });
     } catch (err) {

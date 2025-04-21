@@ -66,8 +66,8 @@ const Hero = () => {
                   className="object-cover h-full w-full"
                 />
               </div>
-               {/* Overlay */}
-               <div className="absolute w-full h-full bg-black/70 z-10 pointer-events-none"></div>
+              {/* Overlay */}
+              <div className="absolute w-full h-full bg-black/70 z-10 pointer-events-none"></div>
             </SwiperSlide>
           );
         })}

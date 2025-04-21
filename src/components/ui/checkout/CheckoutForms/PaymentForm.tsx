@@ -1,6 +1,6 @@
 import React from "react";
 import { FiCreditCard, FiLock } from "react-icons/fi";
-import { CheckoutFormData } from "../utils/types";
+import { CheckoutFormData } from "../CheckoutForms/types";
 
 
 interface PaymentFormProps {

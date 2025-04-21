@@ -34,6 +34,9 @@ export interface LoginCredentials {
 export interface RegisterData {
   name: string;
   email: string;
+  bio?: string;
+  avatar?: string;
+  banner?: string;
   password: string;
   venueManager?: boolean;
 }
