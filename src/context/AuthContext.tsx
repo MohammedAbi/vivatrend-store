@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useCallback,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/auth";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -13,7 +19,7 @@ interface AuthContextType {
   user: UserProfile | null;
   token: string | null;
   login: (credentials: LoginCredentials) => Promise<void>;
-  register: (userData: RegisterData) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
   error: string | null;
@@ -22,8 +28,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // Initialize with null and handle parsing in the hook itself
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser, removeUser] = useLocalStorage<UserProfile | null>(
     "user",
     null
@@ -32,7 +37,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     "token",
     null
   );
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -40,9 +44,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleAuthSuccess = useCallback(
     (response: AuthResponse) => {
       const { accessToken, ...userData } = response.data;
-
       setToken(accessToken);
-      setUser(userData);
+      setUser({
+        name: userData.name,
+        email: userData.email,
+        bio: userData.bio || undefined,
+        avatar: userData.avatar || undefined,
+        banner: userData.banner || undefined,
+        venueManager: userData.venueManager || false,
+      });
       setError(null);
     },
     [setToken, setUser]
@@ -57,10 +67,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         handleAuthSuccess(response);
         navigate("/");
       } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Login failed";
-        setError(errorMessage);
-        throw err; // Re-throw to allow component-level handling
+        setError(
+          err instanceof Error ? err.message : "Login failed, please try again"
+        );
+        throw err;
       } finally {
         setIsLoading(false);
       }
@@ -69,17 +79,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const register = useCallback(
-    async (userData: RegisterData) => {
+    async (data: RegisterData) => {
       setIsLoading(true);
       setError(null);
       try {
-        await authService.register(userData);
-
+        await authService.register(data);
         navigate("/login");
+        // Optional: Add success notification here
       } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Registration failed";
-        setError(errorMessage);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Registration failed, please try again"
+        );
         throw err;
       } finally {
         setIsLoading(false);
@@ -92,6 +104,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     removeToken();
     removeUser();
     navigate("/login");
+    // Optional: Add logout notification here
   }, [navigate, removeToken, removeUser]);
 
   const clearError = useCallback(() => {
