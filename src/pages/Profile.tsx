@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Profile: React.FC = () => {
   const { user, logout, error } = useAuth();
@@ -11,20 +12,15 @@ const Profile: React.FC = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please login to view your profile");
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
   if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-12 text-center mt-[90px]">
-        <h2 className="text-2xl font-bold mb-4 text-white">
-          Please log in to view your profile
-        </h2>
-        <button
-          onClick={() => navigate("/login")}
-          className="btn btn-lg btn-primary mx-auto px-16 py-2 rounded-lg mt-8"
-        >
-          Login
-        </button>
-      </div>
-    );
+    return null;
   }
 
   const formatName = (name: string) => {

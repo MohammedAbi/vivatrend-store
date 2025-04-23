@@ -1,17 +1,14 @@
-// src/context/ProductsContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { API_CONFIG, apiRequest } from "../../services/api";
 
+// Define what a product looks like
 export interface Product {
   id: string;
   title: string;
   description: string;
   price: number;
   discountedPrice: number;
-  image: {
-    url: string;
-    alt: string;
-  };
+  image: { url: string; alt: string };
   rating: number;
   tags: string[];
   reviews: {
@@ -22,44 +19,54 @@ export interface Product {
   }[];
 }
 
+// Define what context provides
 interface ProductsContextType {
   products: Product[];
   loading: boolean;
   error: string | null;
-  fetchProducts: () => Promise<void>;
+  fetchProducts: () => void;
 }
 
+// Create the context
 const ProductsContext = createContext<ProductsContextType | undefined>(
   undefined
 );
 
-export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({
+// The provider component
+export const ProductsProvider = ({
   children,
+}: {
+  children: React.ReactNode;
 }) => {
+  // State for products, loading, and errors
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Function to get products from API
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
+
     try {
       const response = await apiRequest<{ data: Product[] }>(
         API_CONFIG.ENDPOINTS.PRODUCTS.ALL
       );
       setProducts(response.data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch products");
-      console.error("Error fetching products:", err);
+      setError("Failed to load products. Please try again later.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  // Load products when component mounts
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // Provide the values to our app
   return (
     <ProductsContext.Provider
       value={{ products, loading, error, fetchProducts }}
@@ -69,9 +76,10 @@ export const ProductsProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// Custom hook to use the products context
 export const useProducts = () => {
   const context = useContext(ProductsContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useProducts must be used within a ProductsProvider");
   }
   return context;

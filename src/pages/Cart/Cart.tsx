@@ -7,8 +7,10 @@ import CouponInput from "./CouponInput";
 
 import CartSummary from "./CartSummary";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context";
 
 const Cart: React.FC = () => {
+  const { user } = useAuth();
   const {
     cartItems,
     isCartOpen,
@@ -56,6 +58,16 @@ const Cart: React.FC = () => {
 
   const total = calculateTotal();
   const discountAmount = discountApplied ? getCartTotal() * 0.1 : 0;
+
+  const handleProceedToCheckout = () => {
+    if (!user) {
+      toast.error("Please login to proceed to checkout");
+      toggleCart();
+      navigate("/login");
+      return;
+    }
+    navigate("/checkout");
+  };
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -118,10 +130,7 @@ const Cart: React.FC = () => {
 
               <button
                 className="btn btn-primary btn-lg w-full"
-                onClick={() => {
-                  toggleCart();
-                  navigate("/checkout");
-                }}
+                onClick={handleProceedToCheckout}
               >
                 Proceed to Checkout
               </button>

@@ -25,7 +25,7 @@ const SidebarFilter: React.FC<SidebarFilterProps> = ({
                 className="accent-accent"
               />
               <span className="text-sm text-primary hover:text-white">
-                {tag}
+                {tag.toLocaleUpperCase()}
               </span>
             </label>
           </li>
