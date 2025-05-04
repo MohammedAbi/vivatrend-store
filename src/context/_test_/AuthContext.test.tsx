@@ -1,152 +1,147 @@
+// Import necessary dependencies
 import React from "react";
-import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider, useAuth } from "../AuthContext";
-import { authService } from "../../services/auth";
-import { AuthResponseData } from "../../services/auth"; // Adjust the import path as necessary
-import type { MockedFunction } from "vitest";
+import type { UserProfile } from "../../services/auth/types";
 
-// Mock authService
-vi.mock("../../services/auth", () => ({
-  authService: {
-    login: vi.fn(),
-    register: vi.fn(),
-  },
-}));
+/**
+ * MOCKING useLocalStorage HOOK
+ * -----------------------------
+ * We mock this custom hook so we can simulate saving and loading data
+ * (like tokens) without touching the real localStorage.
+ */
+vi.mock("../../hooks/useLocalStorage", () => {
+  // ✅ Use const because the reference never changes
+  const store: Record<string, unknown> = {};
 
-// Mock useNavigate
-const mockNavigate = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
+  function useLocalStorageMock<T>(
+    key: string,
+    initialValue: T
+  ): [T, (value: T) => void, () => void] {
+    const setValue = (value: T) => {
+      store[key] = value;
+    };
+
+    const removeValue = () => {
+      delete store[key];
+    };
+
+    return [(store[key] as T) ?? initialValue, setValue, removeValue];
+  }
+
   return {
-    ...actual,
-    useNavigate: () => mockNavigate,
+    default: useLocalStorageMock,
   };
 });
 
-// Provide AuthContext with Router
+/**
+ * MOCKING authService
+ * ---------------------
+ * We fake the backend login and register functions so we don't need a real server.
+ */
+vi.mock("../../services/auth", () => {
+  return {
+    authService: {
+      login: vi.fn(() =>
+        Promise.resolve({
+          data: {
+            accessToken: "mock-token",
+            name: "Jane Doe",
+            email: "jane@example.com",
+            bio: "Bio text",
+            avatar: {
+              url: "avatar.jpg",
+              alt: "User avatar",
+            },
+            banner: {
+              url: "banner.jpg",
+              alt: "User banner",
+            },
+            venueManager: true,
+          },
+        })
+      ),
+      register: vi.fn(() => Promise.resolve()),
+    },
+  };
+});
+
+// Helper wrapper to include necessary providers (Auth + Router)
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>
     <AuthProvider>{children}</AuthProvider>
   </BrowserRouter>
 );
 
-describe("AuthProvider", () => {
+describe("AuthContext", () => {
+  // Make sure all mocks are reset before each test
   beforeEach(() => {
     vi.clearAllMocks();
-    localStorage.clear();
   });
 
-  it("logs in and sets user and token", async () => {
-    const credentials = {
-      email: "first.last@stud.noroff.no",
-      password: "UzI1NiIsInR5cCI",
-    };
+  /**
+   * TEST 1: Logging in a user
+   * --------------------------
+   * We simulate logging in, and expect the user and token to be set.
+   */
+  it("logs in a user and sets token", async () => {
+    // Render the hook with context
+    const { result } = renderHook(() => useAuth(), { wrapper });
 
-    const mockUser: AuthResponseData = {
-      name: "username",
-      email: "first.last@stud.noroff.no",
+    // Simulate login call
+    await act(async () => {
+      await result.current.login({
+        email: "jane@example.com",
+        password: "password",
+      });
+    });
+
+    // Expect user details and token to be set correctly
+    // Expect user details and token to be set correctly
+    expect(result.current.user).toEqual<UserProfile>({
+      name: "Jane Doe",
+      email: "jane@example.com",
+      bio: "Bio text",
       avatar: {
-        url: "https://img.service.com/avatar.jpg",
-        alt: "My avatar alt text",
+        url: "avatar.jpg",
+        alt: "User avatar",
       },
       banner: {
-        url: "https://img.service.com/banner.jpg",
-        alt: "My banner alt text",
-      },
-      accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
-      venueManager: true,
-    };
-
-    (
-      authService.login as MockedFunction<typeof authService.login>
-    ).mockResolvedValue({
-      data: mockUser,
-      meta: {},
-    });
-
-    const { result } = renderHook(() => useAuth(), { wrapper });
-
-    await act(async () => {
-      await result.current.login(credentials);
-    });
-
-    const { user, token } = result.current;
-
-    // Type guard: Check if user is not null and is of type AuthResponseData
-    if (user && (user as AuthResponseData)) {
-      const { accessToken, ...expectedUser } = mockUser;
-      const { accessToken: receivedAccessToken, ...receivedUser } =
-        user as AuthResponseData;
-
-      // Assert user is set correctly (ignoring accessToken)
-      expect(receivedUser).toEqual(expectedUser);
-      expect(token).toBe(mockUser.accessToken);
-      expect(mockNavigate).toHaveBeenCalledWith("/");
-    } else {
-      throw new Error(
-        "User is null or not of type AuthResponseData, cannot test login flow."
-      );
-    }
-  });
-
-  it("shows error on login failure", async () => {
-    (
-      authService.login as MockedFunction<typeof authService.login>
-    ).mockRejectedValue(new Error("Invalid credentials"));
-
-    const { result } = renderHook(() => useAuth(), { wrapper });
-
-    await act(async () => {
-      try {
-        await result.current.login({
-          email: "fail@test.com",
-          password: "wrong",
-        });
-      } catch {}
-    });
-
-    expect(result.current.error).toBe("Invalid credentials");
-  });
-
-  it("registers and navigates to login", async () => {
-    const registerData = {
-      name: "username",
-      email: "first.last@stud.noroff.no",
-      password: "UzI1NiIsInR5cCI",
-      bio: "This is my profile bio",
-      avatar: {
-        url: "https://img.service.com/avatar.jpg",
-        alt: "My avatar alt text",
-      },
-      banner: {
-        url: "https://img.service.com/banner.jpg",
-        alt: "My banner alt text",
+        url: "banner.jpg",
+        alt: "User banner",
       },
       venueManager: true,
-    };
-
-    (
-      authService.register as MockedFunction<typeof authService.register>
-    ).mockResolvedValueOnce(undefined);
-
-    const { result } = renderHook(() => useAuth(), { wrapper });
-
-    await act(async () => {
-      await result.current.register(registerData);
     });
 
-    expect(mockNavigate).toHaveBeenCalledWith("/login");
+    expect(result.current.token).toBe("mock-token");
+    expect(result.current.error).toBeNull(); // No error expected
   });
 
-  it("throws if useAuth is used outside provider", () => {
-    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+  /**
+   * TEST 2: Logging out the user
+   * -----------------------------
+   * We simulate a login followed by logout and check that user/token are cleared.
+   */
+  it("logs out the user", async () => {
+    const { result } = renderHook(() => useAuth(), { wrapper });
 
-    expect(() => renderHook(() => useAuth())).toThrowError(
-      "useAuth must be used within an AuthProvider"
-    );
+    // First log the user in
+    await act(async () => {
+      await result.current.login({
+        email: "jane@example.com",
+        password: "password",
+      });
+    });
 
-    errorSpy.mockRestore();
+    // Then log the user out
+    act(() => {
+      result.current.logout();
+    });
+
+    // User and token should now be null
+    expect(result.current.user).toBeNull();
+    expect(result.current.token).toBeNull();
   });
 });

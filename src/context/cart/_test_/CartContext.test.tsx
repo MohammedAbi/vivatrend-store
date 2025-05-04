@@ -1,15 +1,14 @@
 import React from "react";
 import { renderHook, act } from "@testing-library/react";
+import CartContext, { CartProvider } from "../CartContext";
+import { Product } from "../types";
 
-import CartContext, { CartProvider } from "../cart/CartContext";
-import { Product } from "../cart/types";
-
-// Custom wrapper to provide CartContext to the hook
+// Custom wrapper to provide CartContext to the hook during tests
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <CartProvider>{children}</CartProvider>
 );
 
-// Mock product data to simulate real-world product structure
+// Mock product data representing a realistic item in the cart
 const mockProduct: Product = {
   id: "159fdd2f-2b12-46de-9654-d9139525ba87",
   title: "Gold headphones",
@@ -33,7 +32,7 @@ const mockProduct: Product = {
 };
 
 describe("CartProvider", () => {
-  // Reset localStorage before each test to avoid state bleed
+  // Clear localStorage before each test to ensure isolation
   beforeEach(() => {
     localStorage.clear();
   });
@@ -51,7 +50,7 @@ describe("CartProvider", () => {
     expect(result.current.cartItems[0].quantity).toBe(1);
   });
 
-  it("increments quantity if product exists", () => {
+  it("increments quantity if product already exists", () => {
     const { result } = renderHook(() => React.useContext(CartContext)!, {
       wrapper,
     });
@@ -77,7 +76,7 @@ describe("CartProvider", () => {
     expect(result.current.cartItems).toHaveLength(0);
   });
 
-  it("updates quantity", () => {
+  it("updates product quantity in cart", () => {
     const { result } = renderHook(() => React.useContext(CartContext)!, {
       wrapper,
     });
@@ -90,7 +89,7 @@ describe("CartProvider", () => {
     expect(result.current.cartItems[0].quantity).toBe(5);
   });
 
-  it("clears cart", () => {
+  it("clears the entire cart and localStorage", () => {
     const { result } = renderHook(() => React.useContext(CartContext)!, {
       wrapper,
     });
@@ -101,11 +100,10 @@ describe("CartProvider", () => {
     });
 
     expect(result.current.cartItems).toHaveLength(0);
-
     expect(localStorage.getItem("cartItems")).toBe(JSON.stringify([]));
   });
 
-  it("calculates total and count", () => {
+  it("calculates total price and item count correctly", () => {
     const { result } = renderHook(() => React.useContext(CartContext)!, {
       wrapper,
     });
@@ -115,6 +113,7 @@ describe("CartProvider", () => {
       result.current.updateQuantity(mockProduct.id, 3);
     });
 
+    // 3 items of the same product
     expect(result.current.getCartItemCount()).toBe(3);
     expect(result.current.getCartTotal()).toBe(3 * mockProduct.discountedPrice);
   });
