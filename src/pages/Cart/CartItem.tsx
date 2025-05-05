@@ -20,6 +20,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <button
           onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
           className="p-1 text-gray-500 hover:text-black transition-colors"
+          aria-label="decrease quantity"
         >
           <FaMinus size={12} />
         </button>
@@ -27,6 +28,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <button
           onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
           className="p-1 text-gray-500 hover:text-black transition-colors"
+          aria-label="increase quantity"
         >
           <FaPlus size={12} />
         </button>
@@ -35,6 +37,7 @@ const CartItem: React.FC<CartItemProps> = ({
     <button
       onClick={() => onRemove(item.id)}
       className="text-red-500 hover:text-red-700 transition-colors"
+      aria-label="remove item"
     >
       <FaTimes />
     </button>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import LoginForm from "./LoginForm";
 import { fireEvent, render, screen } from "@testing-library/react";
+import LoginForm from "../LoginForm";
 
 // Group of tests for the LoginForm component
 describe("LoginForm", () => {
