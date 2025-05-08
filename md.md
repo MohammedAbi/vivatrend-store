@@ -1,12 +1,19 @@
 JONIS
 
 
-ABCDEFGHIJKLMNOPQRSTUVWXZÆÅLØ
+
+
+ABI
+
 
 PAPPA
+
 
 MAMMA
 
 
-SHAAN
+ABCDEFGHIJKLMNOPQRSTU
 
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4w4ww4w4w4ww4ww4ww4ww4ww4ww4w44ww4ww4ww4w4w4tt6t6t6t6tt6t6t66t6tt6t6t6t6t6t6t6t76t6tukujkukukukukukukukuukukukukukukukukukuukukukukukhjjjijiiuøt7tt7try

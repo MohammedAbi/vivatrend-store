@@ -6,7 +6,7 @@ import ProductImage from "./ProductImage";
 import ProductDetails from "./ProductDetails";
 import ProductReviews from "./ProductReviews";
 import { useCart } from "../../hooks/useCart";
-import { SpinnerDotted } from "spinners-react";
+import { SpinnerDotted } from "spinners-react"; 
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

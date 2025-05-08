@@ -45,7 +45,10 @@ const Products = () => {
 
   if (loading) {
     return (
-      <div className="h-screen fixed bottom-0 top-0 bg-black/90 w-full z-50 flex justify-center items-center">
+      <div
+        className="h-screen fixed bottom-0 top-0 bg-black/90 w-full z-50 flex justify-center items-center"
+        data-testid="loading-spinner"
+      >
         <SpinnerDotted color="white" />
       </div>
     );
@@ -53,7 +56,10 @@ const Products = () => {
 
   if (error) {
     return (
-      <div className="container pt-[180px] mx-auto px-4 py-8 text-center text-red-500">
+      <div
+        className="container pt-[180px] mx-auto px-4 py-8 text-center text-red-500"
+        data-testid="error-message"
+      >
         Error loading products: {error}
       </div>
     );
@@ -69,9 +75,15 @@ const Products = () => {
         {/* Main content area - takes 3/4 width when no products found */}
         <div className="lg:w-3/4 w-full">
           {filteredProducts.length > 0 ? (
-            <ProductsGrid products={filteredProducts} />
+            <ProductsGrid
+              products={filteredProducts}
+              data-testid="products-grid"
+            />
           ) : (
-            <div className="flex items-start justify-center h-full">
+            <div
+              className="flex items-start justify-center h-full"
+              data-testid="no-products"
+            >
               <div className="text-center p-8 bg-white/10 rounded-lg w-full">
                 <h3 className="text-2xl font-bold text-white mb-4">
                   No products found

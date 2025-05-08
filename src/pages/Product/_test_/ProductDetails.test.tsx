@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import ProductDetails from "./ProductDetails";
+import ProductDetails from "../ProductDetails";
 
 // Mock toast.success
 vi.mock("react-toastify", () => ({
