@@ -12,9 +12,17 @@ const RatingStars: React.FC<RatingStarsProps> = ({ rating, reviewsCount }) => {
     .fill(0)
     .map((_, index) =>
       index < Math.round(rating) ? (
-        <FaStar key={`star-${index}`} className="text-yellow-400" />
+        <FaStar
+          key={`star-${index}`}
+          className="text-yellow-400"
+          data-testid="filled-star"
+        />
       ) : (
-        <FaRegStar key={`star-${index}`} className="text-white" />
+        <FaRegStar
+          key={`star-${index}`}
+          className="text-white"
+          data-testid="empty-star"
+        />
       )
     );
 
