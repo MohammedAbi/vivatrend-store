@@ -19,10 +19,10 @@ import Products from "./pages/Product/Products";
 import ProductPage from "./pages/Product/ProductPage";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import Profile from "./pages/Profile";
 import TermsAndPrivacy from "./pages/TermsPrivacy";
 import Contact from "./components/Contact";
 import Checkout from "./components/ui/checkout/CheckoutSteps/Checkout";
+import Profile from "./pages/Profile/Profile";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();

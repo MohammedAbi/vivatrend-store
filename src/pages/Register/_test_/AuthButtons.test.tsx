@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import AuthButtons from "./AuthButtons";
+import AuthButtons from "../AuthButtons";
 
 // Test suite for the AuthButtons component
 describe("AuthButtons", () => {

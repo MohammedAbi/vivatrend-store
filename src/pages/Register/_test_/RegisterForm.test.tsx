@@ -4,10 +4,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "../RegisterForm";
 
 // ✅ Mock the useAuth hook so we can isolate the RegisterForm component's behavior
-vi.mock("../../context", () => ({
+vi.mock("../../../context", () => ({
   useAuth: () => ({
     register: vi.fn(),
     isLoading: false,

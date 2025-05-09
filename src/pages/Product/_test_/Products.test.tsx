@@ -3,7 +3,7 @@ import { describe, it, vi, expect, beforeEach } from "vitest";
 import Products from "../Products";
 import { MemoryRouter } from "react-router-dom";
 
-// Mock SpinnerDotted to avoid real import issues
+// Mock SpinnerDotted
 vi.mock("spinners-react", () => ({
   SpinnerDotted: () => <div role="status">Loading...</div>,
 }));
