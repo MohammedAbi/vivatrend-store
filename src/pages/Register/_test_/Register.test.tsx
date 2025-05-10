@@ -3,15 +3,24 @@ import { vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import Register from "../Register";
 
+// Define prop types for the mocked components
+interface RegisterFormProps {
+  onLoginClick: () => void;
+}
+
+interface AuthButtonsProps {
+  onLoginClick: () => void;
+}
+
 // Mock child components to isolate Register component
 vi.mock("../RegisterForm", () => ({
-  default: ({ onLoginClick }: any) => (
+  default: ({ onLoginClick }: RegisterFormProps) => (
     <button onClick={onLoginClick}>Mock RegisterForm Login</button>
   ),
 }));
 
 vi.mock("../AuthButtons", () => ({
-  default: ({ onLoginClick }: any) => (
+  default: ({ onLoginClick }: AuthButtonsProps) => (
     <button onClick={onLoginClick}>Mock AuthButtons Login</button>
   ),
 }));

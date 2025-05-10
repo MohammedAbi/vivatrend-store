@@ -2,17 +2,32 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, vi, expect, beforeEach } from "vitest";
 import Products from "../Products";
 import { MemoryRouter } from "react-router-dom";
+import { Product } from "../types";
 
+// -------------------
 // Mock SpinnerDotted
+// -------------------
 vi.mock("spinners-react", () => ({
   SpinnerDotted: () => <div role="status">Loading...</div>,
 }));
 
-// Mock SidebarFilter and SearchBar with test ids
+// -------------------------------------
+// Mock SidebarFilter with proper types
+// -------------------------------------
+interface SidebarFilterProps {
+  availableTags: string[];
+  selectedTags: string[];
+  onTagToggle: (tag: string) => void;
+}
+
 vi.mock("../../../components/ui/SidebarFilter", () => ({
-  default: ({ availableTags, selectedTags, onTagToggle }: any) => (
+  default: ({
+    availableTags,
+    selectedTags,
+    onTagToggle,
+  }: SidebarFilterProps) => (
     <div>
-      {availableTags.map((tag: string) => (
+      {availableTags.map((tag) => (
         <button
           key={tag}
           data-testid={`tag-button-${tag}`}
@@ -26,8 +41,16 @@ vi.mock("../../../components/ui/SidebarFilter", () => ({
   ),
 }));
 
+// ----------------------------------
+// Mock SearchBar with proper types
+// ----------------------------------
+interface SearchBarProps {
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+}
+
 vi.mock("../../../components/ui/SearchBar", () => ({
-  default: ({ searchQuery, onSearchChange }: any) => (
+  default: ({ searchQuery, onSearchChange }: SearchBarProps) => (
     <input
       data-testid="search-input"
       value={searchQuery}
@@ -36,28 +59,45 @@ vi.mock("../../../components/ui/SearchBar", () => ({
   ),
 }));
 
-// Mock ProductsGrid
+// ---------------------------------
+// Mock ProductsGrid with types
+// ---------------------------------
+interface ProductsGridProps {
+  products: Product[];
+}
+
 vi.mock("../ProductsGrid", () => ({
-  default: ({ products }: any) => (
+  default: ({ products }: ProductsGridProps) => (
     <div data-testid="products-grid">
-      {products.map((p: any) => (
+      {products.map((p) => (
         <div key={p.id}>{p.title}</div>
       ))}
     </div>
   ),
 }));
 
+// ----------------------
 // Mock useProducts hook
+// ----------------------
 const mockUseProducts = vi.fn();
+
 vi.mock("../../../context/product/ProductsContext", () => ({
   useProducts: () => mockUseProducts(),
 }));
 
+// ------------------
 // Product fixture
-const productFixture = {
+// ------------------
+const productFixture: Product = {
   id: "1",
   title: "Cool Shirt",
+  price: 29.99,
+  discountedPrice: 24.99,
+  description: "A very cool shirt",
+  image: { url: "cool-shirt.jpg", alt: "A cool shirt" },
   tags: ["fashion", "shirt"],
+  reviews: [],
+  rating: 4.5,
 };
 
 describe("Products", () => {
@@ -102,7 +142,7 @@ describe("Products", () => {
 
     expect(screen.getByText("Cool Shirt")).toBeInTheDocument();
 
-    fireEvent.change(screen.getByTestId("search-input"), {
+    fireEvent.change(screen.getByTestId("search-input") as HTMLInputElement, {
       target: { value: "non-matching" },
     });
 
@@ -118,16 +158,12 @@ describe("Products", () => {
 
     render(<Products />, { wrapper: MemoryRouter });
 
-    // Click the tag filter button
     const fashionButton = screen.getByTestId("tag-button-fashion");
     fireEvent.click(fashionButton);
 
     expect(screen.getByText("Cool Shirt")).toBeInTheDocument();
-
-    // Check that "fashion" is shown as selected
     expect(screen.getByTestId("selected-tags")).toHaveTextContent("fashion");
 
-    // Unselect the tag
     fireEvent.click(fashionButton);
 
     expect(screen.getByText("Cool Shirt")).toBeInTheDocument();
