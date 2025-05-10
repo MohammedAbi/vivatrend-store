@@ -23,6 +23,7 @@ import TermsAndPrivacy from "./pages/TermsPrivacy";
 import Contact from "./components/Contact";
 import Checkout from "./components/ui/checkout/CheckoutSteps/Checkout";
 import Profile from "./pages/Profile/Profile";
+import NotFound from "./pages/NotFound";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
       {
         path: "/terms-privacy",
         element: <TermsAndPrivacy />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },
