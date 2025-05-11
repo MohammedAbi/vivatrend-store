@@ -4,7 +4,6 @@
 
 ![VivaTrend UI](https://github.com/user-attachments/assets/d314bff8-afa1-4f87-a058-5255a3b36080)
 
-
 This image gives a glimpse into the VivaTrend fashion store's user interface, featuring a modern, minimal, and mobile-first design. The application leverages Tailwind CSS for responsiveness and clean layouts, providing an optimal shopping experience on all devices.
 
 ## Description
@@ -78,28 +77,6 @@ npm install
 VITE_API_KEY=your-api-key
 ```
 
-4.2 **Create under src/service/api/api/config.ts file**:
-
-```ts
-export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || "https://v2.api.noroff.dev/",
-  ENDPOINTS: {
-    AUTH: {
-      REGISTER: "auth/register",
-      LOGIN: "auth/login",
-    },
-    PRODUCTS: {
-      ALL: "online-shop",
-      SINGLE: (id: string) => `online-shop/${id}`,
-    },
-  },
-  DEFAULT_HEADERS: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-};
-```
-
 5. **Run the development server**:
 
 ```bash
@@ -150,10 +127,10 @@ export const API_CONFIG = {
 
 For demonstration purposes, you can use the following credentials:
 
-- **Email**: `student27006@stud.noroff.no`
-- **Password**: `student27006`
+- **Email**: `bulibuli@stud.noroff.no`
+- **Password**: `bulibuli`
 
 ## Links
 
 - **Live Website**: [https://vivatrend-store.netlify.app](https://vivatrend-store.netlify.app)
-- **GitHub Repository**: [https://github.com/your-username/vivatrend-store](https://github.com/your-username/vivatrend-store)
+- **GitHub Repository**: [https://github.com/MohammedAbi/vivatrend-store](https://github.com/MohammedAbi/vivatrend-store)
