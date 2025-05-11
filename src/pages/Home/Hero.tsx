@@ -7,6 +7,7 @@ import Img1 from "../../assets/images/background.jpg";
 import Img2 from "../../assets/images/background2.jpg";
 import Img3 from "../../assets/images/background3.jpg";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const slides = [
   {
@@ -27,6 +28,10 @@ const slides = [
 ];
 
 const Hero = () => {
+  useEffect(() => {
+    document.title = "VivaTrend - Discover Fashion Trends";
+  }, []);
+
   return (
     <div className="relative">
       {/* Hero Slider */}

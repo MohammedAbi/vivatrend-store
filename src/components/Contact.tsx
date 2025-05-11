@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import Img1 from "../assets/images/background.jpg";
 import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 
 const Contact = () => {
+  useEffect(() => {
+    document.title = "VivaTrend - Contact Us";
+  }, []);
+
   return (
     <div className="w-full min-h-screen flex flex-col">
       {/* Main content area accounting for header */}

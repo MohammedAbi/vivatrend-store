@@ -8,6 +8,10 @@ const Profile: React.FC = () => {
   const { user, logout, error } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.title = "VivaTrend - Your Profile";
+  }, []);
+
   const handleLogout = () => {
     logout();
     navigate("/");
