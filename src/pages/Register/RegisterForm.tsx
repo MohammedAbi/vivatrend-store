@@ -191,7 +191,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
 
         <div className="text-sm text-gray-500 mb-4">
           Your username will be:{" "}
-          <span className="font-mono bg-gray-100 px-2 py-1 rounded">
+          <span className="font-mono bg-secondary text-accent px-2 py-1 rounded">
             {usernamePreview || "..."}
           </span>
           <p className="text-xs mt-1">
@@ -275,14 +275,23 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
               </button>
             </div>
           )}
+          <label htmlFor="avatarUrl" className="sr-only">
+            Avatar URL
+          </label>
           <input
+            id="avatarUrl"
             type="url"
             placeholder="https://example.com/avatar.jpg"
             className="w-full text-primary py-4 my-2 border-b border-accent bg-transparent outline-none focus:outline-none"
             value={avatar.url}
             onChange={(e) => handleMediaChange("avatar", "url", e.target.value)}
           />
+
+          <label htmlFor="avatarAlt" className="sr-only">
+            Avatar Alt Text
+          </label>
           <input
+            id="avatarAlt"
             type="text"
             placeholder="Alt text for avatar (optional)"
             className="w-full text-primary py-4 my-2 border-b border-accent bg-transparent outline-none focus:outline-none"
@@ -293,7 +302,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
 
         {/* Banner URL Input */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="bannerUrl"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Banner Image URL (optional)
           </label>
           {banner.url && (
@@ -318,13 +330,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
             </div>
           )}
           <input
+            id="bannerUrl"
             type="url"
             placeholder="https://example.com/banner.jpg"
             className="w-full text-primary py-4 my-2 border-b border-accent bg-transparent outline-none focus:outline-none"
             value={banner.url}
             onChange={(e) => handleMediaChange("banner", "url", e.target.value)}
           />
+
+          <label
+            htmlFor="bannerAlt"
+            className="block text-sm font-medium text-gray-700 mt-4 mb-2"
+          >
+            Banner Alt Text (optional)
+          </label>
           <input
+            id="bannerAlt"
             type="text"
             placeholder="Alt text for banner (optional)"
             className="w-full text-primary py-4 my-2 border-b border-accent bg-transparent outline-none focus:outline-none"
