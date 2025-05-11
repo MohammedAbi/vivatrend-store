@@ -3,6 +3,7 @@ import Img1 from "../../assets/images/background.jpg";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../../context";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,8 +20,10 @@ const Login = () => {
   const handleSubmit = async (email: string, password: string) => {
     try {
       await login({ email, password });
+      toast.success("Welcome back!");
     } catch (err) {
-      console.log(err);
+      toast.error("Login failed. Please check your credentials.");
+      console.error(err);
     }
   };
 

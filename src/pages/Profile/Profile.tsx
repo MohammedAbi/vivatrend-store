@@ -14,6 +14,7 @@ const Profile: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    toast.success("You have been logged out.");
     navigate("/");
   };
 

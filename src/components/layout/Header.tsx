@@ -4,6 +4,7 @@ import { BsList, BsX } from "react-icons/bs";
 import { FaUserCircle, FaShoppingCart, FaSignOutAlt } from "react-icons/fa";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../context";
+import { toast } from "react-toastify";
 
 const Header: React.FC = () => {
   const [header, setHeader] = useState(false);
@@ -30,6 +31,7 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    toast.success("You have been logged out.");
     closeMenu();
     navigate("/");
   };
