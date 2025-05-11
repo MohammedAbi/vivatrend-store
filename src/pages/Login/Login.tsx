@@ -2,10 +2,15 @@ import { useNavigate } from "react-router-dom";
 import Img1 from "../../assets/images/background.jpg";
 import LoginForm from "./LoginForm";
 import { useAuth } from "../../context";
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const { login, isLoading, error } = useAuth();
+
+  useEffect(() => {
+    document.title = "VivaTrend - Login";
+  }, []);
 
   const handleSignUpClick = () => {
     navigate("/register");

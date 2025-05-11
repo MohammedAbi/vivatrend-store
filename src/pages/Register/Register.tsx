@@ -4,10 +4,13 @@ import RegisterForm from "./RegisterForm";
 import AuthButtons from "./AuthButtons";
 import DividerWithText from "./DividerWithText";
 import Info from "./Info";
-
+import { useEffect } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "VivaTrend - Create Account";
+  }, []);
 
   const handleLoginClick = () => {
     navigate("/login");
