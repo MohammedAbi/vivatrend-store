@@ -1,15 +1,17 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
+import type { UserProfile } from "../../services/auth/types";
 import { toast } from "react-toastify";
 import Profile from "./Profile";
 
 // ------------------------
-// Mock the toast.error function
+// Mock the toast functions
 // ------------------------
 vi.mock("react-toastify", () => ({
   toast: {
     error: vi.fn(),
+    success: vi.fn(),
   },
 }));
 
@@ -28,18 +30,8 @@ vi.mock("react-router-dom", async () => {
 // -----------------------------
 // Mock useAuth from AuthContext
 // -----------------------------
-type User = {
-  name: string;
-  email: string;
-  bio: string;
-  avatar: { url: string; alt: string };
-  banner: { url: string; alt: string };
-  venueManager: boolean;
-};
-
-
 const mockLogout = vi.fn();
-let userOverride: User | null = null;
+let userOverride: UserProfile | null = null;
 
 vi.mock("../../context/AuthContext", () => ({
   useAuth: () => {
@@ -52,14 +44,7 @@ vi.mock("../../context/AuthContext", () => ({
     }
 
     return {
-      user: {
-        name: "John Doe",
-        email: "john@example.com",
-        bio: "Loves fashion.",
-        avatar: { url: "", alt: "User avatar" },
-        banner: { url: "", alt: "Banner image" },
-        venueManager: true,
-      },
+      user: userOverride,
       logout: mockLogout,
       error: "Something went wrong.",
     };
@@ -89,13 +74,12 @@ describe("Profile", () => {
 
     expect(screen.getAllByText("John Doe").length).toBeGreaterThan(0);
     expect(screen.getAllByText("john@example.com").length).toBeGreaterThan(0);
-
     expect(screen.getByText("Loves fashion.")).toBeInTheDocument();
     expect(screen.getByText("Venue Manager")).toBeInTheDocument();
     expect(screen.getByText("Logout")).toBeInTheDocument();
   });
 
-  it("calls logout and navigates on logout click", () => {
+  it("calls logout, shows toast, and navigates on logout click", () => {
     userOverride = {
       name: "John Doe",
       email: "john@example.com",
@@ -108,8 +92,10 @@ describe("Profile", () => {
     render(<Profile />, { wrapper: MemoryRouter });
 
     fireEvent.click(screen.getByText("Logout"));
-    expect(mockLogout).toHaveBeenCalled(); // confirms logout function was called
-    expect(mockNavigate).toHaveBeenCalledWith("/"); // confirms redirect to home
+
+    expect(mockLogout).toHaveBeenCalled();
+    expect(toast.success).toHaveBeenCalledWith("You have been logged out.");
+    expect(mockNavigate).toHaveBeenCalledWith("/");
   });
 
   it("displays error if present", () => {
@@ -124,7 +110,7 @@ describe("Profile", () => {
 
     render(<Profile />, { wrapper: MemoryRouter });
 
-    expect(screen.getByText("Something went wrong.")).toBeInTheDocument(); // error message from context
+    expect(screen.getByText("Something went wrong.")).toBeInTheDocument();
   });
 
   it("redirects to login with toast if user is null", () => {
@@ -136,5 +122,20 @@ describe("Profile", () => {
       "Please login to view your profile"
     );
     expect(mockNavigate).toHaveBeenCalledWith("/login");
+  });
+
+  it("formats underscore-separated usernames", () => {
+    userOverride = {
+      name: "john_doe",
+      email: "john@example.com",
+      bio: "Bio test.",
+      avatar: { url: "", alt: "User avatar" },
+      banner: { url: "", alt: "Banner image" },
+      venueManager: false,
+    };
+
+    render(<Profile />, { wrapper: MemoryRouter });
+
+    expect(screen.getByText("John Doe")).toBeInTheDocument();
   });
 });
