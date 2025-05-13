@@ -23,7 +23,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block text-sm font-medium text-primary/70 mb-1">
+          <label
+            className="block text-sm font-medium text-primary/70 mb-1"
+            htmlFor="firstName"
+          >
             First Name
           </label>
           <div className="relative">
@@ -31,6 +34,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
             <input
               type="text"
               name="firstName"
+              id="firstName"
               value={formData.firstName}
               onChange={onInputChange}
               className="w-full pl-10 pr-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"
@@ -39,12 +43,16 @@ const ContactForm: React.FC<ContactFormProps> = ({
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-primary/70 mb-1">
+          <label
+            className="block text-sm font-medium text-primary/70 mb-1"
+            htmlFor="lastName"
+          >
             Last Name
           </label>
           <input
             type="text"
             name="lastName"
+            id="lastName"
             value={formData.lastName}
             onChange={onInputChange}
             className="w-full px-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"
@@ -53,7 +61,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
         </div>
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-primary/70 mb-1">
+        <label
+          className="block text-sm font-medium text-primary/70 mb-1"
+          htmlFor="email"
+        >
           Email
         </label>
         <div className="relative">
@@ -61,6 +72,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
           <input
             type="email"
             name="email"
+            id="email"
             value={formData.email}
             onChange={onInputChange}
             className="w-full pl-10 pr-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"
@@ -69,7 +81,10 @@ const ContactForm: React.FC<ContactFormProps> = ({
         </div>
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-primary/70 mb-1">
+        <label
+          className="block text-sm font-medium text-primary/70 mb-1"
+          htmlFor="address"
+        >
           Address
         </label>
         <div className="relative">
@@ -77,6 +92,7 @@ const ContactForm: React.FC<ContactFormProps> = ({
           <input
             type="text"
             name="address"
+            id="address"
             value={formData.address}
             onChange={onInputChange}
             className="w-full pl-10 pr-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"
@@ -86,12 +102,16 @@ const ContactForm: React.FC<ContactFormProps> = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-primary/70 mb-1">
+          <label
+            className="block text-sm font-medium text-primary/70 mb-1"
+            htmlFor="city"
+          >
             City
           </label>
           <input
             type="text"
             name="city"
+            id="city"
             value={formData.city}
             onChange={onInputChange}
             className="w-full px-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"
@@ -99,12 +119,16 @@ const ContactForm: React.FC<ContactFormProps> = ({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-primary/70 mb-1">
+          <label
+            className="block text-sm font-medium text-primary/70 mb-1"
+            htmlFor="zipCode"
+          >
             ZIP Code
           </label>
           <input
             type="text"
             name="zipCode"
+            id="zipCode"
             value={formData.zipCode}
             onChange={onInputChange}
             className="w-full px-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"

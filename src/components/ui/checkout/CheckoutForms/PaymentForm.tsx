@@ -2,7 +2,6 @@ import React from "react";
 import { FiCreditCard, FiLock } from "react-icons/fi";
 import { CheckoutFormData } from "../CheckoutForms/types";
 
-
 interface PaymentFormProps {
   formData: CheckoutFormData;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -25,7 +24,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
       }}
     >
       <div className="mb-4">
-        <label className="block text-sm font-medium text-primary/70 mb-1">
+        <label
+          className="block text-sm font-medium text-primary/70 mb-1"
+          htmlFor="cardNumber"
+        >
           Card Number
         </label>
         <div className="relative">
@@ -33,6 +35,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           <input
             type="text"
             name="cardNumber"
+            id="cardNumber"
             value={formData.cardNumber}
             onChange={onInputChange}
             placeholder="1234 5678 9012 3456"
@@ -42,12 +45,16 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
         </div>
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-primary/70 mb-1">
+        <label
+          className="block text-sm font-medium text-primary/70 mb-1"
+          htmlFor="cardName"
+        >
           Name on Card
         </label>
         <input
           type="text"
           name="cardName"
+          id="cardName"
           value={formData.cardName}
           onChange={onInputChange}
           className="w-full px-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"
@@ -56,12 +63,16 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-primary/70 mb-1">
+          <label
+            className="block text-sm font-medium text-primary/70 mb-1"
+            htmlFor="expiryDate"
+          >
             Expiry Date
           </label>
           <input
             type="text"
             name="expiryDate"
+            id="expiryDate"
             value={formData.expiryDate}
             onChange={onInputChange}
             placeholder="MM/YY"
@@ -70,7 +81,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-primary/70 mb-1">
+          <label
+            className="block text-sm font-medium text-primary/70 mb-1"
+            htmlFor="cvv"
+          >
             CVV
           </label>
           <div className="relative">
@@ -78,6 +92,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             <input
               type="text"
               name="cvv"
+              id="cvv"
               value={formData.cvv}
               onChange={onInputChange}
               className="w-full pl-10 pr-3 py-3 border-b border-accent bg-transparent focus:outline-none focus:ring-0 text-primary"
