@@ -35,6 +35,18 @@ VivaTrend is a front-end e-commerce application where users can browse fashion p
 - Vitest
 - React Testing Library
 
+## Feedback & Grading
+
+### Grade: Passed ✅
+
+### Teacher's Feedback:
+
+Dear Mohammed,
+
+Thank you for your JavaScript Frameworks work. Your commitment to completing this project is evident.
+
+Fantastic achievement in your JavaScript Frameworks assignment! Everything was aligned perfectly with the criteria. Great execution!
+
 ## Folder Structure
 
 ```
