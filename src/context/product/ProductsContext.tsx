@@ -43,27 +43,10 @@ export const ProductsProvider = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Function to get products from API
-  // const fetchProducts = async () => {
-  //   setLoading(true);
-  //   setError(null);
-
-  //   try {
-  //     const response = await apiRequest<{ data: Product[] }>(
-  //       API_CONFIG.ENDPOINTS.PRODUCTS.ALL
-  //     );
-  //     setProducts(response.data);
-  //   } catch (err) {
-  //     setError("Failed to load products. Please try again later.");
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
-    setProducts([]); 
+    setProducts([]);
 
     try {
       const response = await apiRequest<{ data: Product[] }>(

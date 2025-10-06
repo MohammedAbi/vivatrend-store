@@ -37,7 +37,7 @@ const Contact = () => {
             alt="VivaTrend customer service representative helping a client"
             className="w-full h-full object-cover"
           />
-          <div className="absolute w-full h-full bg-black/50 z-10 pointer-events-none"></div>
+          <div className="absolute w-full h-full bg-black/50 z-10 pointer-events-none" />
         </div>
 
         {/* Right side - contact form */}

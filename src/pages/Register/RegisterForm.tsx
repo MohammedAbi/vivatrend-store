@@ -252,7 +252,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
         />
 
         {/* Avatar URL Input */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Profile Picture URL (optional)
           </label>
@@ -295,6 +295,65 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onLoginClick }) => {
             type="text"
             placeholder="Alt text for avatar (optional)"
             className="w-full text-primary py-4 my-2 border-b border-accent bg-transparent outline-none focus:outline-none"
+            value={avatar.alt}
+            onChange={(e) => handleMediaChange("avatar", "alt", e.target.value)}
+          />
+        </div> */}
+        {/* Avatar URL Input */}
+        <div className="mb-4">
+          {/* Avatar URL Label */}
+          <label
+            htmlFor="avatarUrl"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Profile Picture URL (optional)
+          </label>
+
+          {/* Avatar Preview */}
+          {avatar.url && (
+            <div className="flex items-center gap-4 mb-2">
+              <img
+                src={avatar.url}
+                alt={avatar.alt || "Avatar preview"}
+                className="w-16 h-16 rounded-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setAvatar({ url: "", alt: "" })}
+                className="text-sm text-red-500 hover:underline"
+              >
+                Remove
+              </button>
+            </div>
+          )}
+
+          {/* Avatar URL Input */}
+          <input
+            id="avatarUrl"
+            type="url"
+            placeholder="https://example.com/avatar.jpg"
+            className="w-full py-2 px-3 mb-4 border-b border-accent bg-transparent text-primary outline-none focus:outline-none focus:ring-1 focus:ring-primary"
+            value={avatar.url}
+            onChange={(e) => handleMediaChange("avatar", "url", e.target.value)}
+          />
+
+          {/* Avatar Alt Label */}
+          <label
+            htmlFor="avatarAlt"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Alt Text for Avatar (optional)
+          </label>
+
+          {/* Avatar Alt Input */}
+          <input
+            id="avatarAlt"
+            type="text"
+            placeholder="Alt text for avatar (optional)"
+            className="w-full py-2 px-3 mb-2 border-b border-accent bg-transparent text-primary outline-none focus:outline-none focus:ring-1 focus:ring-primary"
             value={avatar.alt}
             onChange={(e) => handleMediaChange("avatar", "alt", e.target.value)}
           />
